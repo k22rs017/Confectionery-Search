@@ -37,6 +37,15 @@ class ConfectioneryViewModel: ObservableObject {
             }
         }
     }
+
+    func didSelectItem(item: Confectionery) {
+        guard let urlString = item.url, let validURL = URL(string: urlString) else {
+            print("Invalid URL")
+            return
+        }
+        selectedURL = validURL
+    }
+
     func fetchData() {
         let urlString = "https://sysbird.jp/toriko/api/?apikey=guest&format=json&order=r&max=100" // APIリクエスト
         guard let url = URL(string: urlString) else {
@@ -145,10 +154,8 @@ struct ContentView: View {
                     // リストの表示
                     List(viewModel.filteredConfectioneries, id: \.url) { item in
                         Button(action: {
-                            if let urlString = item.url, let validURL = URL(string: urlString) {
-                                viewModel.selectedURL = validURL
-                                showSafari.toggle()
-                            }
+                            viewModel.didSelectItem(item: item)
+                            showSafari.toggle()
                         }) {
                             HStack {
                                 // 画像URLがある場合は表示
