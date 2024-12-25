@@ -23,7 +23,7 @@ struct Confectionery: Decodable {
 class ConfectioneryViewModel: ObservableObject {
     @Published var confectioneries = [Confectionery]() // 表示するデータ
     @Published var isLoading = false // データ取得中かどうか
-    @Published var searchText: String = "" // 検索文字列
+    @Published var searchText = "" // 検索文字列
     @Published var selectedURL: URL? // 選択したURL
     
     // 検索条件に応じたデータをフィルタリング
@@ -119,36 +119,36 @@ struct ContentView: View {
                 // 検索フィールド
                 HStack {
                     Image(systemName: "magnifyingglass")
-                        .foregroundColor(.gray)
-                        .padding(.leading, 10)
+                        .foregroundStyle(.gray)
+                        .padding(.leading, 8)
                     
                     TextField("Search for a confectionery", text: $viewModel.searchText)
-                        .padding(10)
+                        .padding(8)
                         .background(Color.white)
                         .cornerRadius(12)
                         .shadow(color: Color.gray.opacity(0.2), radius: 5, x: 0, y: 5)
                         .font(.system(size: 16))
-                        .frame(height: 50)
-                        .padding(.trailing, 10)
+                        .frame(height: 48)
+                        .padding(.trailing, 8)
                         .disabled(viewModel.isLoading)  // ローディング中は無効化
                 }
-                .padding(.horizontal)
-                .padding(.top, 10)
+                .padding(.horizontal, 8)
+                .padding(.top, 8)
                 
                 // ローディング中の表示
                 if viewModel.isLoading && viewModel.confectioneries.isEmpty {
                     VStack {
                         ProgressView("Loading...")
                             .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-                            .padding(20)
+                            .padding(16)
                         Text("Fetching confectioneries...")
-                            .foregroundColor(.gray)
+                            .foregroundStyle(.gray)
                     }
                     .frame(maxHeight: .infinity) // 空きスペースを埋める
                 } else if viewModel.filteredConfectioneries.isEmpty {
                     // 検索結果がない場合
                     Text("No data available")
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .frame(maxHeight: .infinity) // 空きスペースを埋める
                 } else {
                     // リストの表示
@@ -164,7 +164,7 @@ struct ContentView: View {
                                         image
                                             .resizable()
                                             .scaledToFit()
-                                            .frame(width: 60, height: 60)
+                                            .frame(width: 56, height: 56)
                                             .cornerRadius(12) // 角丸を追加
                                     } placeholder: {
                                         ProgressView()
@@ -177,13 +177,12 @@ struct ContentView: View {
                                         Text(name)
                                             .font(.headline)
                                             .fontWeight(.medium)
-                                            .foregroundColor(.primary) // メインの色
+                                            .foregroundStyle(.black) // メインの色
                                     }
                                 }
-                                .padding(.leading, 10)
+                                .padding(.leading, 8)
                             }
-                            .padding(.vertical, 10) // アイテムの上下に余白を追加
-                            //                            .buttonStyle(PlainButtonStyle()) // ボタンのデフォルトスタイルを無効にする
+                            .padding(.vertical, 8) // アイテムの上下に余白を追加
                         }
                     }
                     //                    .frame(maxHeight: .infinity)
@@ -232,28 +231,21 @@ struct ContentView: View {
     //                        guard let image = item.image, let name = item.name, let url = item.url else { return false }
     //                        return !image.isEmpty && !name.isEmpty && !url.isEmpty
     //                    }
-    //                    updateUI(confectioneries: validItems, isLoading: false)
+    //                    await updateUI(confectioneries: validItems, isLoading: false)
     //                } catch let error as URLError {
     //                    // ネットワーク関連のエラー
     //                    print("Network error occurred: \(error.localizedDescription)")
-    //                    updateUI(confectioneries: [], isLoading: false)
+    //                    await updateUI(confectioneries: [], isLoading: false)
     //                } catch let error as DecodingError {
     //                    // データのデコードエラー
     //                    print("Failed to decode response: \(error.localizedDescription)")
-    //                    updateUI(confectioneries: [], isLoading: false)
+    //                    await updateUI(confectioneries: [], isLoading: false)
     //                } catch {
     //                    // その他のエラー
     //                    print("An unexpected error occurred: \(error.localizedDescription)")
-    //                    updateUI(confectioneries: [], isLoading: false)
+    //                    await updateUI(confectioneries: [], isLoading: false)
     //                }
     //            }
-    //        }
-    
-    /// メインスレッドで UI を更新する関数
-    //        @MainActor
-    //        func updateUI(confectioneries: [Confectionery], isLoading: Bool) {
-    //            self.confectioneries = confectioneries
-    //            self.isLoading = isLoading
     //        }
 }
 
@@ -277,4 +269,3 @@ struct SafariViewController: UIViewControllerRepresentable {
 #Preview {
     ContentView()
 }
-
