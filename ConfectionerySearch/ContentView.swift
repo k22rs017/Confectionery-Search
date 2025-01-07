@@ -37,7 +37,7 @@ class ConfectioneryViewModel: ObservableObject {
             }
         }
     }
-
+    // 選択されたアイテムのURLを検証し、選択状態を更新する関数
     func didSelectItem(item: Confectionery) {
         guard let urlString = item.url, let validURL = URL(string: urlString) else {
             print("Invalid URL")
@@ -45,7 +45,7 @@ class ConfectioneryViewModel: ObservableObject {
         }
         selectedURL = validURL
     }
-
+    // データをAPIから取得する関数
     func fetchData() {
         let urlString = "https://sysbird.jp/toriko/api/?apikey=guest&format=json&order=r&max=100" // APIリクエスト
         guard let url = URL(string: urlString) else {
@@ -93,25 +93,8 @@ class ConfectioneryViewModel: ObservableObject {
 
 // MARK: - View
 struct ContentView: View {
-    //        @State private var confectioneries = [Confectionery]() // 表示するデータ
-    //        @State private var isLoading = false // データ取得中かどうか
-    //        @State private var searchText: String = "" // 検索文字列
-    //        @State private var selectedURL: URL? // 選択したURL
     @StateObject private var viewModel = ConfectioneryViewModel()
     @State private var showSafari = false // SafariViewを表示するフラグ
-    
-    // 検索条件に応じたデータをフィルタリング
-    //        var filteredConfectioneries: [Confectionery] {
-    //            if searchText.isEmpty {
-    //                return confectioneries
-    //            } else {
-    //                return confectioneries.filter {
-    //                    //                $0.name?.localizedStandardContains(searchText) ?? false
-    //                    guard let name = $0.name else { return false }
-    //                    return name.lowercased().contains(searchText.lowercased())
-    //                }
-    //            }
-    //        }
     
     var body: some View {
         NavigationStack {
@@ -202,51 +185,6 @@ struct ContentView: View {
             })
         }
     }
-    
-    /// データをリセットして再取得
-    //        func resetAndFetchData() {
-    //            viewModel.isLoading = true  // 再取得開始時にローディング状態を設定
-    //            fetchData() // 再取得
-    //        }
-    
-    //        /// データを取得
-    //        func fetchData() {
-    //            let urlString = "https://sysbird.jp/toriko/api/?apikey=guest&format=json&order=r&max=100" // APIリクエスト
-    //            guard let url = URL(string: urlString) else {
-    //                print("Invalid URL")
-    //                Task {
-    //                    updateUI(confectioneries: [], isLoading: false)
-    //                }
-    //                return
-    //            }
-    //
-    //            // ローディング開始
-    //            isLoading = true
-    //
-    //            Task {
-    //                do {
-    //                    let (data, _) = try await URLSession.shared.data(from: url)
-    //                    let decodedResponse = try JSONDecoder().decode(ApiResponse.self, from: data)
-    //                    let validItems = decodedResponse.item.filter { item in
-    //                        guard let image = item.image, let name = item.name, let url = item.url else { return false }
-    //                        return !image.isEmpty && !name.isEmpty && !url.isEmpty
-    //                    }
-    //                    await updateUI(confectioneries: validItems, isLoading: false)
-    //                } catch let error as URLError {
-    //                    // ネットワーク関連のエラー
-    //                    print("Network error occurred: \(error.localizedDescription)")
-    //                    await updateUI(confectioneries: [], isLoading: false)
-    //                } catch let error as DecodingError {
-    //                    // データのデコードエラー
-    //                    print("Failed to decode response: \(error.localizedDescription)")
-    //                    await updateUI(confectioneries: [], isLoading: false)
-    //                } catch {
-    //                    // その他のエラー
-    //                    print("An unexpected error occurred: \(error.localizedDescription)")
-    //                    await updateUI(confectioneries: [], isLoading: false)
-    //                }
-    //            }
-    //        }
 }
 
 struct SafariView: View {
